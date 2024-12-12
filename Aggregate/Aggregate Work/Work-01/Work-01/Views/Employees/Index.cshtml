@@ -1,0 +1,102 @@
+﻿@model IEnumerable<Employee>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row">
+    <div class="col-12">
+        <h3 class="display-1" style="font-size: 2.50rem">Employees</h3>
+        <div class="d-flex justify-content-end mb-1">
+            <a class="btn btn-primary btn-sm" asp-action="Create" asp-controller="Employees"> Create</a>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>EmployeeName</th>
+                    <th>Gender</th>
+                    <th>Address</th>
+                    <th>JoiningDate</th>
+                    <th>Salary</th>
+                    <th>IsaCurrentEmployee </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var w in Model)
+                {
+                    <tr>
+                        <td>
+                            <img src="~/Pictures/@w.Picture" class="rounded-circle" style="width:50px" />
+                        </td>
+                        <td>@w.EmployeeName</td>
+                        <td>@w.Gender</td>
+                        <td>@w.Address</td>
+
+                        <td>@(w.JoiningDate.ToString("yyyy-MM-dd"))</td>
+                        <td>@w.Salary?.ToString("0.00")</td>
+                        <td>@(w.IsaCurrentEmployee ? "Yes" : "No")</td>
+                        <td>
+                            <a title="Edit this item" class="btn btn-primary btn-sm" asp-action="Edit" asp-controller="Employees" asp-route-id="@w.EmployeeId">Edit</a>
+                           @*  <button title="Delete this item" type="button" class="btn btn-danger btn-sm del" data-pk="@w.EmployeeId">Delete</button> *@
+                            <a class="btn btn-danger btn-sm" asp-action="Delete" onclick="return confirm('Are you sure  to delete?')" asp-controller="Employees" asp-route-id="@w.EmployeeId">Delete</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="7">
+                            <h4>Qualifications</h4>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>PassingYear</th>
+                                        <th>Degree</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var wl in w.Qualifications)
+                                    {
+                                        <tr>
+                                            <td>@wl.PassingYear</td>
+                                            <td>@wl.Degree</td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/libs/jquery/jquery.min.js"></script>
+    <script>
+        $(() => {
+            $('.del').click(function () {
+                let did = $(this).data('pk');
+                let trD = $(this).closest('tr');
+                let trS = trD.next();
+                if (confirm("Are you sure to delete?")) {
+                    $.ajax({
+                        type: 'post',
+                        url: '/Employees/Delete/' + did,
+                        dataType: 'json',
+                        success: r => {
+                            if (r.success && r.success == true) {
+                                trD.remove();
+                                trS.remove();
+                            }
+                        }
+                    })
+                }
+            });
+        });
+    </script>
+}
+

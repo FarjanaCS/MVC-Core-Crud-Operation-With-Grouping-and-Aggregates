@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Grouping";
+}
+
+<div class="row mt-3">
+    <div class="col-12">
+        <form asp-controller="Employees" asp-action="Grouping" method="post">
+            <button class="btn btn-primary" type="submit" name="groupby" value="gender">Group by Gender</button>
+            <button class="btn btn-primary" type="submit" name="groupby" value="year-month">Group by Joining Month and Year</button>
+
+        </form>
+        
+    </div>
+</div>

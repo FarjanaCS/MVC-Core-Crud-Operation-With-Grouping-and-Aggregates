@@ -1,0 +1,49 @@
+﻿@model IEnumerable<GroupedData<Employee>>
+@{
+    ViewData["Title"] = "GroupingResult";
+}
+<div class="row">
+    <div class="col-12">
+        @foreach (var g in Model)
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Group by</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@g.Key</td>
+                        <td>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>EmployeeName</th>
+                                        <th>Gender</th>
+                                        <th>Salary</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var d in g.Items)
+                                    {
+                                        <tr>
+                                            <td>@d.EmployeeName</td>
+                                            <td>@d.Gender</td>
+                                            <td>@d.Salary</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+        <div class="col-12">
+            <a asp-action="Grouping" class="btn-link">Back to the Grouping Page</a>
+        </div>
+    </div>
+</div>
+
